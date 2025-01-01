@@ -35,7 +35,8 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  let existinguser = await userModel.findOne({ email });
+
+  let existinguser = await userModel.findOne({email});
   if (!existinguser) return res.status(404).send("incorrect email or password");
   const accesstoken = jwt.sign(
     { id: existinguser._id, email: existinguser.email },
@@ -44,7 +45,8 @@ router.post("/login", async (req, res) => {
 
   let { password: pass, ...user } = existinguser.toJSON();
 
-  let validpassword = await bcrypt.compare(password, existinguser.password);
+
+  let validpassword = await bcrypt.compare(password, pass);
   if (!validpassword)
     return res.status(404).send({ message: "incorrect email or password" });
   res.status(200).send({
