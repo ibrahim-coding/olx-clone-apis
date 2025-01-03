@@ -20,11 +20,11 @@ router.post("/", upload.single("image"), async (req, res) => {
   const { title, description, price, type } = req.body;
 
   const product = await new productModel({
-    details,
     type,
     title,
     description,
     price,
+    userId,
     image: "http://localhost:4000/images/" + req.file.filename,
   }).save();
   if (!product)
@@ -59,6 +59,7 @@ router.get("/getProduct/:id", auth, async (req, res) => {
     return res.status(500).send({ message: "product can not be found" });
   res.send(product);
 });
+
 
 // router.get("/getProducts", async (req, res) => {
 //   let filter = {};
