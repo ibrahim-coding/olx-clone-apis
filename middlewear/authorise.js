@@ -1,23 +1,20 @@
 const jwt = require("jsonwebtoken");
-const Authorise = (req, res, next) => {
-  const authHeader = req.headers.authorization;
 
-  if (!authHeader)
-    return res.status(401).send({ message: "unauthorized access" });
-
-  const token = authHeader.split(" ")[1];
-  
-
+const auth = async (req, res, next) => {
   try {
-    let decode = jwt.verify(token, "JWT_SECRET");
-     
+    const rawToken = req.headers.authorization;
+
+    if (!rawToken)
+      return res.status(401).send({ message: "Unauthorize access" });
+
+    const token = rawToken.split(" ")[1];
+
+    const decoded = jwt.verify(token, "JWT_SECRET");
+
     next();
-  } catch (error) {
-    console.log(error);
-    res.status(401).send({
-      message: "unauthorise access",
-    });
+  } catch (e) {
+    res.status(401).send({ error: "Please authenticate" });
   }
 };
 
-module.exports = { Authorise };
+module.exports = auth;
