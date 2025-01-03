@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
 
   let existinguser = await userModel.findOne({email});
   if (!existinguser) return res.status(404).send("incorrect email or password");
-  const accesstoken = jwt.sign(
+  const accessToken = jwt.sign(
     { id: existinguser._id, email: existinguser.email },
     "JWT_SECRET"
   );
