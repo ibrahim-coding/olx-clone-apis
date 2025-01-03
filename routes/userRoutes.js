@@ -3,6 +3,7 @@ const userModel = require("../models/userModel");
 const router = Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {Authorise} = require('../middlewear/authorise')
 
 router.get("/", async (req, res) => {
   const users = await userModel.find();

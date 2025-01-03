@@ -1,17 +1,23 @@
 const jwt = require("jsonwebtoken");
+const Authorise = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-const auth = async (req, res, next) => {
-    try {
-        const token = req.header("Authorization").replace("Bearer ", "");
-        const decoded = jwt.verify(token, "JWT_SECRET");
-        const user = await User.findOne({ _id: decoded._id, "tokens.token": token });
-        if (!user) {
-            throw new Error();
-        }
-        req.token = token;
-        req.user = user;
-        next();
-    } catch (e) {
-        res.status(401).send({ error: "Please authenticate" });
-    }
+  if (!authHeader)
+    return res.status(401).send({ message: "unauthorized access" });
+
+  const token = authHeader.split(" ")[1];
+  
+
+  try {
+    let decode = jwt.verify(token, "JWT_SECRET");
+     
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401).send({
+      message: "unauthorise access",
+    });
+  }
 };
+
+module.exports = { Authorise };
