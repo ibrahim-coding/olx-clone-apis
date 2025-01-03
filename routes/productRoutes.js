@@ -46,10 +46,6 @@ router.put("/update/:id", upload.single("image"), async (req, res) => {
 
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
-<<<<<<< HEAD
-  const product = await productModel.findOne({  _id: 
-    id }).populate("userId");
-=======
   const product = await productModel.findOneAndDelete({ _id: id });
   if (!product)
     return res.status(500).send({ message: "product can not be deleted" });
@@ -59,7 +55,6 @@ router.delete("/delete/:id", async (req, res) => {
 router.get("/getProduct/:id", auth, async (req, res) => {
   const { id } = req.params;
   const product = await productModel.findOne({ _id: id }).populate("userId");
->>>>>>> c56e9f0a2857b6d1f65d7981df5b4c79721f48f7
   if (!product)
     return res.status(500).send({ message: "product can not be found" });
   res.send(product);
