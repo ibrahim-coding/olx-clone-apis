@@ -51,7 +51,7 @@ router.post("/login", async (req, res) => {
     return res.status(404).send({ message: "incorrect email or password" });
   res.status(200).send({
     message: "user successfully loggedin",
-    accesstoken,
+    accessToken,
     user,
   });
 });

@@ -63,7 +63,8 @@ router.delete("/delete/:id", async (req, res) => {
 
 router.get("/getProduct/:id",  auth,async (req, res) => {
   const { id } = req.params;
-  const product = await productModel.findOne({  _id: id }).populate("userId");
+  const product = await productModel.findOne({  _id: 
+    id }).populate("userId");
   if (!product)
     return res.status(500).send({ message: "product can not be found" });
   res.send(product);
