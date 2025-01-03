@@ -17,17 +17,11 @@ const upload = multer({
 });
 
 router.post("/", upload.single("image"), async (req, res) => {
-  
+  const { title, description, price, type } = req.body;
 
-
-  
-  const { title, description, price,userId, type } = req.body;
-
- 
   const product = await new productModel({
     details,
     type,
-    userId,
     title,
     description,
     price,
@@ -39,39 +33,37 @@ router.post("/", upload.single("image"), async (req, res) => {
 });
 
 router.put("/update/:id", upload.single("image"), async (req, res) => {
-  const { title, description, price,image } = req.body;
+  const { title, description, price, image } = req.body;
   const { id } = req.params;
   const product = await productModel.findOneAndUpdate(
     { _id: id },
-    { title, description, price ,image}
+    { title, description, price, image }
   );
   if (!product)
     return res.status(500).send({ message: "product can not be updated" });
-  res.status(200).send({ message: "product created", id});
-})
+  res.status(200).send({ message: "product created", id });
+});
 
 router.delete("/delete/:id", async (req, res) => {
-  const{ id } = req.params;
-  const product = await productModel.findOneAndDelete({ _id: id  }
-  );
-  if(!product)
-    return res.status(500).send({ message: "product can not be deleted"});
-  res.status(200).send({message : "product deleted"})
-  
-})
-
-
-router.get("/getProduct/:id",  auth,async (req, res) => {
   const { id } = req.params;
+<<<<<<< HEAD
   const product = await productModel.findOne({  _id: 
     id }).populate("userId");
+=======
+  const product = await productModel.findOneAndDelete({ _id: id });
+  if (!product)
+    return res.status(500).send({ message: "product can not be deleted" });
+  res.status(200).send({ message: "product deleted" });
+});
+
+router.get("/getProduct/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const product = await productModel.findOne({ _id: id }).populate("userId");
+>>>>>>> c56e9f0a2857b6d1f65d7981df5b4c79721f48f7
   if (!product)
     return res.status(500).send({ message: "product can not be found" });
   res.send(product);
 });
-
-
-
 
 // router.get("/getProducts", async (req, res) => {
 //   let filter = {};
@@ -85,20 +77,16 @@ router.get("/getProduct/:id",  auth,async (req, res) => {
 //   let products = await productModel.find(filter).populate
 //   ({
 //     path: "userId",
-//     select: "name phone "  
+//     select: "name phone "
 //   })
-    
+
 router.get("/getProducts", auth, async (req, res) => {
+  const products = await productModel.find({}).populate("userId");
 
-  const products = await productModel.find({ }).populate("userId");
-
-  if (products.length === 0) 
+  if (products.length === 0)
     return res.status(404).send({ message: "product not found" });
 
-  
   return res.status(200).send({ message: "products", data: products });
-  
-
 });
 
 module.exports = router;
