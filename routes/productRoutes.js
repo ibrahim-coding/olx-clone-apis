@@ -17,7 +17,7 @@ const upload = multer({
 });
 
 router.post("/", upload.single("image"), async (req, res) => {
-  const { title, description, price, type } = req.body;
+  const { title, description, price, type, userId } = req.body;
 
   const product = await new productModel({
     type,
